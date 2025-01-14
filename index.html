@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#f0f0f0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="QRImage1.png">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #A4D2F5;
+            overflow: hidden;
+        }
+
+        .qr-container {
+            max-width: 80vmin;
+            max-height: 80vmin;
+            animation: spin-and-scale 3s ease-out forwards;
+            transform-origin: center;
+        }
+
+        .qr-image {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        @keyframes spin-and-scale {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(0.5) rotate(540deg);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1) rotate(720deg);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="qr-container">
+        <img src="QRImage1.png" alt="QR Code" class="qr-image" id="qrCode">
+    </div>
+
+    <script>
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+
+        // Existing click counter code
+        let clickCount = 0;
+        const qrCode = document.getElementById('qrCode');
+        
+        qrCode.addEventListener('click', () => {
+            clickCount++;
+            if (clickCount === 5) {
+                window.location.href = 'https://links.lukeharper.co.uk';
+            }
+        });
+    </script>
+</body>
+</html> 
