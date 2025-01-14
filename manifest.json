@@ -1,11 +1,11 @@
 {
-  "name": "QR Code Scanner",
-  "short_name": "QR Scanner",
+  "name": "QR Luke Harper",
+  "short_name": "QR Luke",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#f0f0f0",
-  "theme_color": "#f0f0f0",
-  "description": "QR Code Scanner Application",
+  "background_color": "#A4D2F5",
+  "theme_color": "#A4D2F5",
+  "description": "QR Luke Harper Link page",
   "icons": [
     {
       "src": "QRImage1.png",
