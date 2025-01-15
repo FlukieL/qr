@@ -80,6 +80,41 @@
             100% { transform: perspective(400px) rotateY(0deg); opacity: 1; }
         }
 
+        @keyframes click-bounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        .bounce {
+            animation: click-bounce 0.3s ease-out;
+        }
+
+        .counter {
+            position: fixed;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .counter.visible {
+            opacity: 1;
+        }
+
+        #leftCounter {
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #rightCounter {
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
         /* Animation classes */
         .animate-spin-scale { animation: spin-and-scale 3s ease-out forwards; }
         .animate-fade-bounce { animation: fade-in-bounce 2s ease-out forwards; }
@@ -92,6 +127,9 @@
     <div class="qr-container">
         <img src="QRImage1.png" alt="QR Code" class="qr-image" id="qrCode">
     </div>
+
+    <div id="leftCounter" class="counter">5</div>
+    <div id="rightCounter" class="counter">5</div>
 
     <script>
         // Add this code at the start of the script section
@@ -120,14 +158,38 @@
             });
         }
 
-        // Existing click counter code
+        // Update the click counter code
         let clickCount = 0;
         const qrCode = document.getElementById('qrCode');
+        const leftCounter = document.getElementById('leftCounter');
+        const rightCounter = document.getElementById('rightCounter');
         
         qrCode.addEventListener('click', () => {
+            // Remove existing bounce class and re-add it to trigger animation
+            qrCode.classList.remove('bounce');
+            void qrCode.offsetWidth; // Trigger reflow
+            qrCode.classList.add('bounce');
+
             clickCount++;
+            const remainingClicks = 5 - clickCount;
+            
+            // Hide both counters initially
+            leftCounter.classList.remove('visible');
+            rightCounter.classList.remove('visible');
+            
+            // Show counter on alternating sides
+            if (clickCount % 2 === 1) {
+                leftCounter.textContent = remainingClicks;
+                leftCounter.classList.add('visible');
+            } else {
+                rightCounter.textContent = remainingClicks;
+                rightCounter.classList.add('visible');
+            }
+
             if (clickCount === 5) {
-                window.location.href = 'https://links.lukeharper.co.uk';
+                setTimeout(() => {
+                    window.location.href = 'https://links.lukeharper.co.uk';
+                }, 500); // Small delay to show the final counter
             }
         });
     </script>
