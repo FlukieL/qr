@@ -26,6 +26,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="apple-touch-icon" href="QRImage1.png">
+    <link rel="preload" href="QRImage1.png" as="image">
     <style>
         body, html {
             margin: 0;
@@ -51,6 +52,7 @@
             cursor: pointer;
         }
 
+        /* Keyframe Animations */
         @keyframes spin-and-scale {
             0% { transform: scale(0) rotate(0deg); opacity: 0; }
             50% { transform: scale(0.5) rotate(540deg); opacity: 0.5; }
@@ -131,8 +133,8 @@
         <img src="QRImage1.png" alt="QR Code" class="qr-image" id="qrCode">
     </div>
 
-    <div id="leftCounter" class="counter">5</div>
-    <div id="rightCounter" class="counter">5</div>
+    <div id="leftCounter" class="counter visible">5</div>
+    <div id="rightCounter" class="counter visible">5</div>
 
     <script>
         // Add this code at the start of the script section
@@ -176,17 +178,15 @@
             clickCount++;
             const remainingClicks = 5 - clickCount;
             
-            // Hide both counters initially
-            leftCounter.classList.remove('visible');
-            rightCounter.classList.remove('visible');
-            
             // Show counter on alternating sides
             if (clickCount % 2 === 1) {
                 leftCounter.textContent = remainingClicks;
                 leftCounter.classList.add('visible');
+                rightCounter.classList.remove('visible'); // Ensure the other is hidden
             } else {
                 rightCounter.textContent = remainingClicks;
                 rightCounter.classList.add('visible');
+                leftCounter.classList.remove('visible'); // Ensure the other is hidden
             }
 
             if (clickCount === 5) {
