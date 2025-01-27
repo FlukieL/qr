@@ -101,23 +101,44 @@
             font-weight: bold;
             color: #333;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: all 0.5s ease;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes slide-grow-exit {
+            0% {
+                transform: translateX(var(--start-pos)) scale(1);
+                opacity: 0;
+            }
+            20% {
+                transform: translateX(0) scale(2);
+                opacity: 1;
+            }
+            80% {
+                transform: translateX(0) scale(2);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(0.5);
+                opacity: 0;
+            }
         }
 
         .counter.visible {
-            opacity: 1;
+            animation: slide-grow-exit 4s ease-out forwards;
         }
 
         #leftCounter {
             left: 20px;
             top: 50%;
-            transform: translateY(-50%);
+            --start-pos: -100%;
         }
 
         #rightCounter {
             right: 20px;
             top: 50%;
-            transform: translateY(-50%);
+            --start-pos: 100%;
         }
 
         /* Animation classes */
@@ -178,16 +199,22 @@
             clickCount++;
             const remainingClicks = 5 - clickCount;
             
-            // Show counter on alternating sides
+            // Show counter with dramatic animation
             if (clickCount % 2 === 1) {
                 leftCounter.textContent = remainingClicks;
                 leftCounter.classList.add('visible');
-                rightCounter.classList.remove('visible'); // Ensure the other is hidden
+                rightCounter.classList.remove('visible');
             } else {
                 rightCounter.textContent = remainingClicks;
                 rightCounter.classList.add('visible');
-                leftCounter.classList.remove('visible'); // Ensure the other is hidden
+                leftCounter.classList.remove('visible');
             }
+
+            // Reset animation after completion
+            setTimeout(() => {
+                leftCounter.classList.remove('visible');
+                rightCounter.classList.remove('visible');
+            }, 4000);
 
             if (clickCount === 5) {
                 setTimeout(() => {
