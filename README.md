@@ -1,5 +1,5 @@
 # QR Code Display Page
-![image](https://github.com/user-attachments/assets/1d5deea3-ecdf-463b-a05f-13696388ee17)
+![image](https://github.com/user-attachments/assets/bfdb0c9c-d2e5-4208-a365-d9db08dfbf38)
 
 This is a simple web page that displays a QR code which redirects users to a specific link after interaction.
 
