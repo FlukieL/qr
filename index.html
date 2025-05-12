@@ -44,12 +44,16 @@
             max-width: 80vmin;
             max-height: 80vmin;
             transform-origin: center;
+            perspective: 1000px;
+            transform-style: preserve-3d;
         }
 
         .qr-image {
             width: 100%;
             height: 100%;
             cursor: pointer;
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
         }
 
         /* Keyframe Animations */
@@ -169,6 +173,38 @@
             ];
             const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
             document.querySelector('.qr-container').classList.add(randomAnimation);
+
+            // Initialize 3D effect
+            const qrImage = document.querySelector('.qr-image');
+            const container = document.querySelector('.qr-container');
+            
+            // Mouse movement effect
+            document.addEventListener('mousemove', (e) => {
+                const { clientX, clientY } = e;
+                const { left, top, width, height } = container.getBoundingClientRect();
+                const x = (clientX - left) / width - 0.5;
+                const y = (clientY - top) / height - 0.5;
+                
+                qrImage.style.transform = `rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
+            });
+
+            // Reset transform when mouse leaves
+            container.addEventListener('mouseleave', () => {
+                qrImage.style.transform = 'rotateY(0deg) rotateX(0deg)';
+            });
+
+            // Gyroscope support
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', (e) => {
+                    // Check if we have permission to use the gyroscope
+                    if (typeof e.beta !== 'undefined' && typeof e.gamma !== 'undefined') {
+                        const beta = Math.min(Math.max(e.beta, -10), 10); // Limit rotation
+                        const gamma = Math.min(Math.max(e.gamma, -10), 10);
+                        
+                        qrImage.style.transform = `rotateX(${beta}deg) rotateY(${gamma}deg)`;
+                    }
+                });
+            }
         });
 
         // Register service worker
